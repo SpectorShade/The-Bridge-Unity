@@ -6,13 +6,16 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 5f;
     public float gravity = -9.81f;
 
-    //Mouse
-    public float mouseSensitivity = 100f;
+    
     public Transform playerCamera;
 
     private CharacterController controller;
     private Vector3 velocity;
     private float xRotation = 0f;
+
+    [Header("Mouse Settings")]
+    [Range(0.1f, 1000f)]
+    public float mouseSensitivity = 100f;
 
     void Start()
     {

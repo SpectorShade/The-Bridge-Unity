@@ -33,6 +33,7 @@ public class StrikeManager : MonoBehaviour
         {
             strikeIcons[currentStrikes].color = strikeColor;
             currentStrikes++;
+            FindFirstObjectByType<VignetteFlash>().FlashBad();
         }
 
         if (currentStrikes >= maxStrikes)

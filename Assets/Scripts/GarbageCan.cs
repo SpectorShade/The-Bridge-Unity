@@ -22,7 +22,8 @@ public class GarbageCan : MonoBehaviour
                     objectManager.AddNeutral();
             }
 
-                Destroy(other.gameObject);
+            FindFirstObjectByType<VignetteFlash>().FlashGood();
+            Destroy(other.gameObject);
         }
     }
 }

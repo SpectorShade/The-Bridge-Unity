@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,8 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject heldObject;
     private Rigidbody heldObjectRb;
 
+    private string currentHeldTag = null;
+
     //previous settings
     private CollisionDetectionMode prevCollisionMode = CollisionDetectionMode.Discrete;
     private RigidbodyInterpolation prevInterpolation = RigidbodyInterpolation.None;
@@ -33,12 +36,33 @@ public class PlayerInteraction : MonoBehaviour
 
     private bool isLookingAtPickup = false;
 
+    private HighlightEmission currentHighlight;
 
+    private HighlightEmission[] trashCans;
+    private HighlightEmission[] snapTrays;
+
+    //object no jumpy pls
+    private List<(Collider, Collider)> ignoredCollisions = new List<(Collider, Collider)>();
+    private int objectsLayer;
+
+
+    private void Start()
+    {
+        Transform garbageParent = GameObject.Find("Garbage")?.transform;
+        if (garbageParent != null)
+            trashCans = garbageParent.GetComponentsInChildren<HighlightEmission>(includeInactive: true);
+        var snapTray = GameObject.FindWithTag("Snappy");
+        if (snapTray != null)
+            snapTrays = new[] { snapTray.GetComponent<HighlightEmission>() };
+
+        objectsLayer = LayerMask.NameToLayer("Objects");
+    }
     void Update()
     {
         HandlePickupInput();
         UpdateCrosshair();
         UpdateTrajectory();
+        HighlightThing();
     }
 
     private void FixedUpdate()
@@ -80,6 +104,8 @@ public class PlayerInteraction : MonoBehaviour
             {
                 heldObject = hit.collider.gameObject;
                 heldObjectRb = heldObject.GetComponent<Rigidbody>();
+                currentHeldTag = hit.collider.tag;
+                UpdateHighlightsBasedOnHeldItem();
 
                 if (heldObjectRb != null)
                 {
@@ -91,6 +117,7 @@ public class PlayerInteraction : MonoBehaviour
                     // prepare while held
                     heldObjectRb.useGravity = false;
                     heldObjectRb.isKinematic = true;
+                    IgnoreCollisionsWithObjects(heldObject, true);
                     heldObjectRb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                     heldObjectRb.interpolation = RigidbodyInterpolation.Interpolate;
 
@@ -123,8 +150,12 @@ public class PlayerInteraction : MonoBehaviour
             heldObject.transform.SetParent(null);
         }
 
+        IgnoreCollisionsWithObjects(heldObject, false);
+
         heldObject = null;
         heldObjectRb = null;
+        currentHeldTag = null;
+        UpdateHighlightsBasedOnHeldItem();
 
         // Hide trajectory visuals
         if (trajectoryLine != null) trajectoryLine.enabled = false;
@@ -151,8 +182,12 @@ public class PlayerInteraction : MonoBehaviour
             if (rb != null) rb.AddForce(playerCamera.forward * throwForce, ForceMode.Impulse);
         }
 
+        IgnoreCollisionsWithObjects(heldObject, false);
+
         heldObject = null;
         heldObjectRb = null;
+        currentHeldTag = null;
+        UpdateHighlightsBasedOnHeldItem();
 
         // Hide trajectory visuals
         if (trajectoryLine != null) trajectoryLine.enabled = false;
@@ -277,6 +312,97 @@ public class PlayerInteraction : MonoBehaviour
                 landingMarker.gameObject.SetActive(false);
             }
         }
+    }
+
+    void HighlightThing()
+    {
+        if (playerCamera == null) return;
+
+        Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+        int layerMask = LayerMask.GetMask("Objects");
+
+        if (Physics.Raycast(ray, out RaycastHit hit, pickupRange, layerMask))
+        {
+            string t = hit.collider.tag;
+            if (t == "WinPickup" || t == "BadPickup" || t == "NeutralPickup")
+            {
+                HighlightEmission newHighlight = hit.collider.GetComponentInChildren<HighlightEmission>();
+
+                if (newHighlight != currentHighlight)
+                {
+                    if (currentHighlight != null)
+                        currentHighlight.SetHighlight(false);
+
+                    if (newHighlight != null)
+                        newHighlight.SetHighlight(true);
+
+                    currentHighlight = newHighlight;
+                }
+                return;
+            }
+        }
+
+        // no valid target or out of range
+        if (currentHighlight != null)
+        {
+            currentHighlight.SetHighlight(false);
+            currentHighlight = null;
+        }
+    }
+
+    void UpdateHighlightsBasedOnHeldItem()
+    {
+        // --- Trash cans highlight when holding bad or neutral ---
+        if (trashCans != null)
+        {
+            bool highlightTrash = currentHeldTag == "BadPickup" || currentHeldTag == "NeutralPickup";
+            foreach (var can in trashCans)
+            {
+                if (can != null)
+                    can.SetHighlight(highlightTrash);
+            }
+        }
+
+        // --- Snap tray highlights when holding good ---
+        if (snapTrays != null)
+        {
+            bool highlightSnap = currentHeldTag == "WinPickup";
+            foreach (var tray in snapTrays)
+            {
+                if (tray != null)
+                    tray.SetHighlight(highlightSnap);
+            }
+        }
+    }
+
+    void IgnoreCollisionsWithObjects(GameObject obj, bool ignore)
+    {
+        Collider[] heldCols = obj.GetComponentsInChildren<Collider>();
+
+        foreach (var other in FindObjectsByType<Collider>(FindObjectsSortMode.None))
+        {
+            if (other.gameObject == obj) continue;
+            if (other.gameObject.layer != objectsLayer) continue;
+
+            foreach (var c in heldCols)
+            {
+                if (ignore)
+                {
+                    if (!Physics.GetIgnoreCollision(c, other))
+                    {
+                        Physics.IgnoreCollision(c, other, true);
+                        ignoredCollisions.Add((c, other));
+                    }
+                }
+                else
+                {
+                    Physics.IgnoreCollision(c, other, false);
+                }
+            }
+        }
+
+        if (!ignore)
+            ignoredCollisions.Clear();
     }
 
 }

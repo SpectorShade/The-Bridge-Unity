@@ -33,6 +33,7 @@ public class SnapTray : MonoBehaviour
             obj.transform.position = transform.position; // lock to tray
             obj.transform.SetParent(transform);          // parent to tray
             currentCount++;
+            FindFirstObjectByType<VignetteFlash>().FlashGood();
 
             if (winLoseManager != null)
                 winLoseManager.ReportGoodPickupPlaced();

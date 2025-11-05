@@ -229,7 +229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &47938206
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2544,7 +2544,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -3434,6 +3434,7 @@ GameObject:
   m_Component:
   - component: {fileID: 832575519}
   - component: {fileID: 832575518}
+  - component: {fileID: 832575520}
   m_Layer: 0
   m_Name: Global Volume
   m_TagString: Untagged
@@ -3473,6 +3474,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &832575520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832575517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4987293d91bd7d34293c9301f4a1008d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashDuration: 0.4
+  maxIntensity: 0.45
+  goodColor: {r: 0, g: 1, b: 0, a: 1}
+  badColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &833592788
 GameObject:
   m_ObjectHideFlags: 0
@@ -3713,6 +3730,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 912666025}
+  - component: {fileID: 912666026}
   m_Layer: 0
   m_Name: Garbage
   m_TagString: Untagged
@@ -3749,6 +3767,20 @@ Transform:
   - {fileID: 1861309068}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &912666026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912666024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddad0a7dbcdde084ba494af8e6ec9169, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 0.55921394, b: 0, a: 1}
+  emissionBoost: 0.5
 --- !u!1 &928808436
 GameObject:
   m_ObjectHideFlags: 0
@@ -5731,8 +5763,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 7
   gravity: -10
-  mouseSensitivity: 800
   playerCamera: {fileID: 625069178}
+  mouseSensitivity: 1000
 --- !u!143 &1305379407
 CharacterController:
   m_ObjectHideFlags: 0
@@ -7249,6 +7281,7 @@ GameObject:
   - component: {fileID: 1859385794}
   - component: {fileID: 1859385793}
   - component: {fileID: 1859385792}
+  - component: {fileID: 1859385796}
   m_Layer: 0
   m_Name: SnapTray
   m_TagString: Snappy
@@ -7360,6 +7393,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859385790}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1859385796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859385790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddad0a7dbcdde084ba494af8e6ec9169, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 0.4687748, g: 1, b: 0, a: 1}
+  emissionBoost: 2
 --- !u!1 &1861309067
 GameObject:
   m_ObjectHideFlags: 0
