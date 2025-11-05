@@ -3,7 +3,52 @@ guid: 9ccf6b001b391314eaaae5618f093fcc
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Espejo
+    second: {fileID: 2100000, guid: bd976e3f229b45041a671a8e31798d87, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Interior
+    second: {fileID: 2100000, guid: 592bf265d4c79c74fb7de387abbf6069, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Llanta
+    second: {fileID: 2100000, guid: 819199b6a4137a44c81ea71286006869, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Luces Delanteras
+    second: {fileID: 2100000, guid: 1403002ed0c7ea447afb98eff41c61b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Luces Traseras
+    second: {fileID: 2100000, guid: 8404f6cdcdbae014db1ff6e3ec5dc844, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal
+    second: {fileID: 2100000, guid: 8ab9251cb5bddb944926b48491db5117, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pintura
+    second: {fileID: 2100000, guid: d2487b7cfddfde14a9b1e364419f5faa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tela Asiento
+    second: {fileID: 2100000, guid: e48a1862bb2abc14c88d1d23b256d6b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ventana
+    second: {fileID: 2100000, guid: 387eb87ed9fc4cf43ac417ab87ec6a96, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -46,11 +91,11 @@ ModelImporter:
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
-    bakeAxisConversion: 0
+    bakeAxisConversion: 1
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
