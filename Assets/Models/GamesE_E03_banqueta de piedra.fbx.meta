@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: 65ca24ed1cec4a1419c73aa21df79fd6
+guid: f15fb89076d0910438754d4b0d9b3723
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cuerpo
+    second: {fileID: 2100000, guid: a8ea4601b6640db4ba557f84125b7577, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: patron
+    second: {fileID: 2100000, guid: 6895c5e72974280499e45250628817f6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -3,7 +3,27 @@ guid: 735b4dda2ef6462418651ba6efe596da
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pintura Amarilla
+    second: {fileID: 2100000, guid: 31da5a6b0893532449441afca2c0072f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pintura Blanca
+    second: {fileID: 2100000, guid: 4b12d22b86c29134b889ba3b87566b0c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pintura Negra
+    second: {fileID: 2100000, guid: d1e66a4b916a9ac49a56b993ec8c78ea, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Reflector Rojo
+    second: {fileID: 2100000, guid: 535caa10731543e4db8dff49b3355ef3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

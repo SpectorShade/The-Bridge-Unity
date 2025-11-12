@@ -178,8 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddad0a7dbcdde084ba494af8e6ec9169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightColor: {r: 0.026510477, g: 1, b: 0, a: 1}
-  emissionBoost: 10
+  highlightColor: {r: 0, g: 11.984312, b: 2.208873, a: 1}
 --- !u!1001 &1073214679639247175
 PrefabInstance:
   m_ObjectHideFlags: 0

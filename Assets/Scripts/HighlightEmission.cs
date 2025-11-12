@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HighlightEmission : MonoBehaviour
 {
+    private static readonly int EmissivePropertyName = Shader.PropertyToID("_FresnelGlow");
     private Renderer[] renderers;
 
     // For each renderer we store an array of materials and an array of base emission colors
@@ -12,8 +12,8 @@ public class HighlightEmission : MonoBehaviour
     private bool isHighlighted = false;
 
     [Header("Highlight Settings")]
+    [ColorUsage(false, true)]
     public Color highlightColor = Color.white;
-    public float emissionBoost = 2f;
 
     void Start()
     {
@@ -26,7 +26,7 @@ public class HighlightEmission : MonoBehaviour
         for (int i = 0; i < rCount; i++)
         {
             Renderer rend = renderers[i];
-            if (rend == null)
+            if (!rend)
             {
                 matsPerRenderer[i] = new Material[0];
                 baseEmissionColorsPerRenderer[i] = new Color[0];
@@ -45,10 +45,10 @@ public class HighlightEmission : MonoBehaviour
                 Material dup = new Material(originalMats[j]);
                 newMats[j] = dup;
 
-                if (dup.HasProperty("_EmissionColor"))
+                if (dup.HasProperty(EmissivePropertyName))
                 {
                     dup.EnableKeyword("_EMISSION");
-                    baseColors[j] = dup.GetColor("_EmissionColor");
+                    baseColors[j] = dup.GetColor(EmissivePropertyName);
                 }
                 else
                 {
@@ -78,10 +78,10 @@ public class HighlightEmission : MonoBehaviour
             for (int j = 0; j < mats.Length; j++)
             {
                 Material mat = mats[j];
-                if (mat == null || !mat.HasProperty("_EmissionColor")) continue;
+                if (!mat || !mat.HasProperty(EmissivePropertyName)) continue;
 
-                Color targetColor = active ? highlightColor * emissionBoost : baseColors[j];
-                mat.SetColor("_EmissionColor", targetColor);
+                Color targetColor = active ? highlightColor.linear : baseColors[j];
+                mat.SetColor(EmissivePropertyName, targetColor);
 
                 // DynamicGI.SetEmissive accepts a renderer and color; calling it per material is fine.
                 DynamicGI.SetEmissive(rend, targetColor);
