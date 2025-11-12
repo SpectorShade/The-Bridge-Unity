@@ -25,6 +25,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _DITHER_PATTERN_BAYER_MATRIX
   - _SPECULAR_SETUP
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -108,11 +109,13 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DITHER_PATTERN: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _FRESNEL_ALPHA: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.7
     - _GlossyReflections: 1
@@ -138,6 +141,7 @@ Material:
     - _BaseColor: {r: 1, g: 0.00392041, b: 0.29803923, a: 1}
     - _Color: {r: 1, g: 0.00392041, b: 0.2980392, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
+    - _FresnelGlow: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

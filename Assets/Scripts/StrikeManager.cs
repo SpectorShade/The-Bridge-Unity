@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class StrikeManager : MonoBehaviour
 {
+    public WinLoseManager winLoseManager;
     [Header("Strike UI")]
     public Image[] strikeIcons;          // Assign 5 icons 
     public Color normalColor = Color.black;
@@ -39,16 +40,8 @@ public class StrikeManager : MonoBehaviour
         if (currentStrikes >= maxStrikes)
         {
             gameEnded = true;
-            LoseGame();
+            winLoseManager.LoseGame();
         }
-    }
-
-    private void LoseGame()
-    {
-        Debug.Log("Strike limit reached. You lose!");
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        SceneManager.LoadScene("LoseScreen"); 
     }
 
     public void ResetStrikes()

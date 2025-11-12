@@ -26,7 +26,7 @@ public class SplashScreenManager : MonoBehaviour
     private IEnumerator PlaySplash()
     {
         // Fade in (black -> transparent)
-        if (fadeImage != null)
+        if (fadeImage)
         {
             float t = 0f;
             while (t < fadeDuration)
@@ -41,7 +41,7 @@ public class SplashScreenManager : MonoBehaviour
         yield return new WaitForSeconds(splashDuration);
 
         // Fade out (transparent -> black)
-        if (fadeImage != null)
+        if (fadeImage)
         {
             float t = 0f;
             while (t < fadeDuration)

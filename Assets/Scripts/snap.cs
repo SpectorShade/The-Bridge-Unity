@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class snap : MonoBehaviour
@@ -8,22 +6,28 @@ public class snap : MonoBehaviour
 
     public string etiqueta;
 
+    private Rigidbody rb;
+    
+    private void Awake() {
+        rb = GetComponent<Rigidbody>();
+    }
+
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == etiqueta)
+        if (other.gameObject.CompareTag(etiqueta))
         {
             if (click == false)
             {
                // transform.position = other.gameObject.transform.position;
-                this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                rb.isKinematic = true;
             }
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == etiqueta)
+        if (other.gameObject.CompareTag(etiqueta))
         {
-            this.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+            rb.isKinematic = false;
         }
     }
     private void OnMouseDown()

@@ -12,12 +12,10 @@ public class MinecartMover : MonoBehaviour
         rb.isKinematic = true; // kinematic for controlled motion
     }
 
-    void FixedUpdate()
-    {
-        if (goal != null)
-        {
-            Vector3 newPos = Vector3.MoveTowards(transform.position, goal.position, speed * Time.fixedDeltaTime);
-            rb.MovePosition(newPos);
-        }
+    void FixedUpdate() {
+        if (!goal) return;
+        
+        Vector3 newPos = Vector3.MoveTowards(transform.position, goal.position, speed * Time.fixedDeltaTime);
+        rb.MovePosition(newPos);
     }
 }

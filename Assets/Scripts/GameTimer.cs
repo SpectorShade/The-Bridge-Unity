@@ -1,17 +1,24 @@
+using System;
 using UnityEngine;
 using TMPro;
 
 public class GameTimer : MonoBehaviour
 {
+
+    public static GameTimer Instance { get; private set; }
+
     [SerializeField] private TMP_Text timerText;
-    private float elapsedTime = 0f;
-    private bool isRunning = false;
 
     public static float finalElapsedTime = 0f;
 
+    public float elapsedTime { get; private set; } = 0f;
+
+    private void Awake() {
+        Instance = this;
+    }
+
     void Update()
     {
-        if (!isRunning) return;
 
         elapsedTime += Time.unscaledDeltaTime;
 
@@ -23,24 +30,20 @@ public class GameTimer : MonoBehaviour
 
     public void StartTimer()
     {
-        isRunning = true;
+        enabled = true;
     }
 
     public void StopTimer()
     {
-        isRunning = false;
+        enabled = false;
         finalElapsedTime = elapsedTime;
     }
 
     public void ResumeTimer()
     {
-        isRunning = true;
+        enabled = true;
     }
-
-    public float GetElapsedTime()
-    {
-        return elapsedTime;
-    }
+    
 
     public void ResetTimer()
     {

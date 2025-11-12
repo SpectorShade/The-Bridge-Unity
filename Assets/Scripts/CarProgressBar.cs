@@ -28,7 +28,7 @@ public class CarProgressBar : MonoBehaviour
 
     void Update()
     {
-        if (minecart == null || goal == null) return;
+        if (!minecart || !goal) return;
 
         // Calculate how far the minecart is from the goal
         float distanceRemaining = Vector3.Distance(minecart.position, goal.position);

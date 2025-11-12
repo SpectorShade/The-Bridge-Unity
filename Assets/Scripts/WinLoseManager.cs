@@ -1,17 +1,17 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class WinLoseManager : MonoBehaviour
 {
-    public SnapTray greenTray;      
-    public int totalBadPickups;      
+    public SnapTray greenTray;
+    public int totalBadPickups;
+
+    [SerializeField] private UnityEvent OnWin;
+    [SerializeField] private UnityEvent OnLose;
+    
     private int removedBadPickups = 0;
-
     private bool gameEnded = false;
-
-    [Header("Scene Names")]
-    public string winSceneName = "WinScreen";
-    public string loseSceneName = "LoseScreen";
 
     // Called by garbage can trigger when a red pickup is removed
 
@@ -21,6 +21,7 @@ public class WinLoseManager : MonoBehaviour
         if (greenTray == null)
             Debug.LogWarning("WinLoseManager: Green Tray not assigned!");
     }
+    
     public void ReportBadPickupRemoved()
     {
         removedBadPickups++;
@@ -37,8 +38,7 @@ public class WinLoseManager : MonoBehaviour
     {
         if (gameEnded) return;
 
-        GameTimer timer = Object.FindFirstObjectByType<GameTimer>();
-        if (timer != null) timer.StopTimer();
+        GameTimer.Instance?.StopTimer();
 
         if (greenTray.IsComplete() && removedBadPickups >= totalBadPickups)
         {
@@ -66,28 +66,29 @@ public class WinLoseManager : MonoBehaviour
         if (gameEnded) return;
         gameEnded = true;
 
-        GameTimer timer = Object.FindFirstObjectByType<GameTimer>();
-        if (timer != null) timer.StopTimer();
+        GameTimer.Instance.StopTimer();
 
-
-        Debug.Log("You Win!");
         UnlockCursor();
-        SceneManager.LoadScene(winSceneName);
+        OnWin?.Invoke();
     }
 
-    private void LoseGame()
+    public void LoseGame()
     {
         if (gameEnded) return;
         gameEnded = true;
 
         Debug.Log("You Lose!");
         UnlockCursor();
-        SceneManager.LoadScene(loseSceneName);
+        OnLose?.Invoke();
     }
 
     private void UnlockCursor()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    public void RestartScene() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

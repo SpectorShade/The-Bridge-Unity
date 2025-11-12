@@ -18,7 +18,7 @@ public class FallDetector : MonoBehaviour
             other.GetComponent<PickupRespawner>()?.Respawn();
 
             // Register strike
-            if (strikeManager != null)
+            if (strikeManager)
                 strikeManager.RegisterStrike();
         }
     }

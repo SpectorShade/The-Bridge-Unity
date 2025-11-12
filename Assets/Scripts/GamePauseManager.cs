@@ -16,35 +16,24 @@ public class GamePauseManager : MonoBehaviour
     private bool isPaused = false;
     private bool isFading = false;
 
-    private GameTimer timer;
-
     private void Start()
     {
-        timer = FindFirstObjectByType<GameTimer>();
-
-        if (fadeImage != null)
+        if (fadeImage)
         {
             Color c = fadeImage.color;
             c.a = 0f;
             fadeImage.color = c;
         }
 
-        if (pauseMenuPanel != null)
+        if (pauseMenuPanel)
             pauseMenuPanel.SetActive(false);
 
-        // Hide cursor at start (assuming game uses mouse look)
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && !isFading)
-        {
-            if (!isPaused)
-                StartCoroutine(PauseGame());
-            else
-                StartCoroutine(ResumeGame());
+        if (Input.GetKeyDown(KeyCode.P) && !isFading) {
+            StartCoroutine(!isPaused ? PauseGame() : ResumeGame());
         }
     }
 
@@ -66,11 +55,10 @@ public class GamePauseManager : MonoBehaviour
 
         fadeImage.color = endColor;
 
-        if (timer != null)
-            timer.StopTimer();
+        GameTimer.Instance?.StopTimer();
 
         // Show pause menu and unlock cursor
-        if (pauseMenuPanel != null)
+        if (pauseMenuPanel)
             pauseMenuPanel.SetActive(true);
 
         Cursor.lockState = CursorLockMode.None;
@@ -86,16 +74,14 @@ public class GamePauseManager : MonoBehaviour
         isFading = true;
         Time.timeScale = 1f;
 
-        if (timer != null)
-            timer.ResumeTimer();
-
+        GameTimer.Instance?.ResumeTimer();
 
         float elapsed = 0f;
         Color startColor = fadeColor;
         Color endColor = new Color(0, 0, 0, 0f);
 
         // Hide pause menu and re-lock cursor
-        if (pauseMenuPanel != null)
+        if (pauseMenuPanel)
             pauseMenuPanel.SetActive(false);
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -119,14 +105,5 @@ public class GamePauseManager : MonoBehaviour
     {
         if (isPaused && !isFading)
             StartCoroutine(ResumeGame());
-    }
-
-    public void QuitButton()
-    {
-        Debug.Log("Returning to main menu...");
-        Time.timeScale = 1f;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Title");
     }
 }
