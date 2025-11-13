@@ -9,7 +9,6 @@ public class PlayerInteraction : MonoBehaviour
     public float pickupRange = 3f;
     public float holdDistance = 2f;
     public float moveSpeed = 15f;
-    public float throwForce = 10f;
 
     // Crosshair
     public Image crosshairImage;       
@@ -44,6 +43,15 @@ public class PlayerInteraction : MonoBehaviour
     //object no jumpy pls
     private List<(Collider, Collider)> ignoredCollisions = new List<(Collider, Collider)>();
     private int objectsLayer;
+
+    [Header("Throw Charge Settings")]
+    public float minThrowForce = 5f;
+    public float maxThrowForce = 25f;
+    public float chargeTime = 1.5f; // seconds to reach max force
+
+    private float currentThrowForce;
+    private float chargeStartTime;
+    private bool isChargingThrow = false;
 
 
     private void Start()
@@ -85,10 +93,27 @@ public class PlayerInteraction : MonoBehaviour
             DropObject();
         }
 
-        // Right click to throw
+        // --- Handle throw charge ---
         if (Input.GetMouseButtonDown(1) && heldObject != null)
         {
-            ThrowObject();
+            // start charging throw
+            isChargingThrow = true;
+            chargeStartTime = Time.time;
+            currentThrowForce = minThrowForce;
+        }
+
+        if (Input.GetMouseButton(1) && isChargingThrow && heldObject != null)
+        {
+            // gradually build up force
+            float chargeProgress = (Time.time - chargeStartTime) / chargeTime;
+            currentThrowForce = Mathf.Lerp(minThrowForce, maxThrowForce, chargeProgress);
+        }
+
+        if (Input.GetMouseButtonUp(1) && isChargingThrow && heldObject != null)
+        {
+            // perform throw with charged force
+            ThrowObject(currentThrowForce);
+            isChargingThrow = false;
         }
     }
 
@@ -162,24 +187,22 @@ public class PlayerInteraction : MonoBehaviour
         if (landingMarker != null) landingMarker.gameObject.SetActive(false);
     }
 
-    void ThrowObject()
+    void ThrowObject(float force)
     {
         if (heldObjectRb != null)
         {
-            // restore physics and apply impulse
             heldObjectRb.useGravity = true;
             heldObjectRb.isKinematic = false;
             heldObjectRb.collisionDetectionMode = prevCollisionMode;
             heldObjectRb.interpolation = prevInterpolation;
 
-            heldObjectRb.AddForce(playerCamera.forward * throwForce, ForceMode.Impulse);
+            heldObjectRb.AddForce(playerCamera.forward * force, ForceMode.Impulse);
         }
         else if (heldObject != null)
         {
-            // fallback: unparent and add basic forward movement
             heldObject.transform.SetParent(null);
             Rigidbody rb = heldObject.GetComponent<Rigidbody>();
-            if (rb != null) rb.AddForce(playerCamera.forward * throwForce, ForceMode.Impulse);
+            if (rb != null) rb.AddForce(playerCamera.forward * force, ForceMode.Impulse);
         }
 
         IgnoreCollisionsWithObjects(heldObject, false);
@@ -189,7 +212,6 @@ public class PlayerInteraction : MonoBehaviour
         currentHeldTag = null;
         UpdateHighlightsBasedOnHeldItem();
 
-        // Hide trajectory visuals
         if (trajectoryLine != null) trajectoryLine.enabled = false;
         if (landingMarker != null) landingMarker.gameObject.SetActive(false);
     }
@@ -261,7 +283,16 @@ public class PlayerInteraction : MonoBehaviour
         Vector3[] points = new Vector3[linePoints];
 
         Vector3 startPos = heldObject.transform.position;
-        Vector3 startVel = playerCamera.forward * throwForce;
+        Vector3 startVel = playerCamera.forward * minThrowForce;
+
+        if(isChargingThrow)
+        {
+            startVel = playerCamera.forward * currentThrowForce;
+        }
+        else
+        {
+            startVel = playerCamera.forward * minThrowForce;
+        }
 
         Vector3 currentPos = startPos;
         Vector3 currentVel = startVel;
